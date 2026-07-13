@@ -16,9 +16,6 @@ export default function Home() {
         <div className="container mx-auto flex flex-col items-center">
           <h2 className="font-bold text-lg transition-colors">Receitas em destaque</h2>
           <Link className="flex text-orange-400 hover:text-orange-700 transition-colors" href="/receitas">Ver todas as receitas <ChevronRight /></Link>
-
-
-
         </div>
 
 
