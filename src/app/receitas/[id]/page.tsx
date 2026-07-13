@@ -21,8 +21,8 @@ export default async function ReceitasPage({ params }: RecipesPageProps) {
   }
 
   return (
-    <main className="flex grow py-8">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <main className="grow py-8">
+      <div className="container mx-auto px-4 max-w-8xl">
         <Link
           className="flex text-orange-500 hover:text-orange-700 transition-colors mb-6"
           href="/receitas"
@@ -32,7 +32,7 @@ export default async function ReceitasPage({ params }: RecipesPageProps) {
 
         <section className="rounded-lg overflow-hidden shadow-md">
           {/* Imagem da receita */}
-          <div className="relative h-64 sm:h-96 w-full">
+          <div className="relative h-64 w-full">
             <Image
               src={recipe.image}
               alt={recipe.title}

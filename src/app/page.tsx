@@ -6,7 +6,7 @@ import RecipeCard from "../components/recipeCards";
 export default function Home() {
   const featureRecipes =recipes.slice(0,3);
   return (
-    <main className="flex-grow">
+    <main className="grow">
       
         <section className="bg-orange-50 flex ">
           <div className="container mx-auto flex flex-col items-center  gap-6 py-12">
