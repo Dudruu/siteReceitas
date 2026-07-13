@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 export default function Home() {
   return (
@@ -9,6 +10,18 @@ export default function Home() {
           <p className="text-xl ">Descubra as receitas simples e saborosas para todas as ocasiões</p>
           <Link className="text-white bg-orange-500 px-3 py-2 font-bold rounded-lg hover:bg-orange-700 transition-colors"href="/receitas">Ver todas as receitas</Link>
           </div>
+        </section>
+
+        <section className="">Receitas em destaque
+        <div className="container mx-auto ">
+          <h2 className="">Receitas em destaque</h2>
+          <Link href="/receitas">Ver todas as receitas <ChevronRight /></Link>
+
+
+
+        </div>
+
+
         </section>
       
     </main>
