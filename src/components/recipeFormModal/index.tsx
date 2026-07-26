@@ -1,3 +1,4 @@
+"use client";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
@@ -9,8 +10,21 @@ interface RecipeFormModalProps{
     onClose: ()=> void;
 }
 
+const DEFAULT_VALUES = {
+    title: "",
+    category: "",
+    description: "",
+    image: "",
+    prepTime: "",
+    cookTime: "",
+    servings: 1,
+    ingredients: [{ value: "" }],
+    instructions: [{ value: "" }]
+};
+
 export default function RecipeFormModal({isOpen, onClose} :RecipeFormModalProps) {
     const inputStyles = "p-2 border border-zinc-200 rounded-md flex-grow w-full";
+    
     const {
         register,
         reset,
@@ -20,6 +34,7 @@ export default function RecipeFormModal({isOpen, onClose} :RecipeFormModalProps)
     } = useForm<RecipeFormData>({
         resolver: yupResolver(recipeSchema),
         mode: "onSubmit",
+        defaultValues: DEFAULT_VALUES
     })
 
     const {
@@ -41,7 +56,12 @@ export default function RecipeFormModal({isOpen, onClose} :RecipeFormModalProps)
     })
     
      const onSubmit = (data: RecipeFormData) => {
-        console.log(data);
+          const recipeData = {
+            ...data,
+            ingredients: data.ingredients.map(ingredient => ingredient.value),
+            instructions: data.instructions.map(instruction => instruction.value)
+        }
+        console.log(recipeData);
         reset();
         onClose();
     }
@@ -49,7 +69,7 @@ export default function RecipeFormModal({isOpen, onClose} :RecipeFormModalProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white">
+      <DialogContent className="bg-white min-w-2xl max-h-[90dvh] overflow-scroll">
        <DialogHeader>
         <DialogTitle>Nova Receita</DialogTitle>
        </DialogHeader>
