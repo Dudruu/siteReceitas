@@ -2,13 +2,24 @@
 
 import RecipeCard  from "@/src/components/recipeCards";
 import RecipeFormModal from "@/src/components/recipeFormModal";
-import { recipes } from "@/src/lib/data";
+import {recipes as initialRecipes} from "@/src/lib/data";
+import type { Recipe } from "@/src/lib/data";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
 
 export default function ReceitasPage() {
   const [isRecipeModalOpen, setIsRecipeModalOpen] =useState(false);
+  const [recipes, setRecipes]= useState<Recipe[]>(initialRecipes);
+
+
+  const handleCreateRecipe =(recipeData : Omit<Recipe, "id">)=> {
+    const newRecipe: Recipe = {
+      ...recipeData,
+      id: (recipes.length +1).toString(),
+    }
+    setRecipes((prev)=>[...prev, newRecipe])
+  }
   return (
     <main className="grow py-8">
       <div className="container mx-auto px-4">
@@ -25,7 +36,7 @@ export default function ReceitasPage() {
             {recipes.map((recipe)=>(<RecipeCard key={recipe.id} recipe={recipe}/>))}
         </div>
       </div>
-      <RecipeFormModal isOpen={isRecipeModalOpen} onClose={()=> setIsRecipeModalOpen(false)}/>
+      <RecipeFormModal isOpen={isRecipeModalOpen} onClose={()=> setIsRecipeModalOpen(false) } onSave={handleCreateRecipe}/>
     </main>
   );
 }

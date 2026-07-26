@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   description: "Site de receitas simples e saborosas",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,9 +29,11 @@ export default function RootLayout({
       lang="pt-BR"
       className={cn("antialiased", inter.variable, "font-sans", geist.variable)}
     >
-      <Header/>
-      <body className="min-h-full flex flex-col">{children}</body>
-      <Footer/>
+      <body className="min-h-full flex flex-col">
+        <Header/>
+        {children}
+        <Footer/>
+      </body>
     </html>
   );
 }
