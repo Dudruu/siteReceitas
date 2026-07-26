@@ -2,7 +2,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { RecipeFormData, recipeSchema } from "@/src/lib/formValidationSchemas/recipeSchema";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 interface RecipeFormModalProps{
     isOpen:boolean;
@@ -22,6 +22,24 @@ export default function RecipeFormModal({isOpen, onClose} :RecipeFormModalProps)
         mode: "onSubmit",
     })
 
+    const {
+        fields: ingredientFields,
+        append: appendIngredients,
+        remove: removeIngredients,
+    } = useFieldArray({
+        control,
+        name: "ingredients"
+    })
+
+    const {
+        fields: instructionFields,
+        append: appendInstructions,
+        remove: removeInstructions,
+    } = useFieldArray({
+        control,
+        name: "instructions"
+    })
+    
      const onSubmit = (data: RecipeFormData) => {
         console.log(data);
         reset();
@@ -92,16 +110,16 @@ export default function RecipeFormModal({isOpen, onClose} :RecipeFormModalProps)
                         <label htmlFor="ingredients">Ingredientes</label>
                         <div className="flex flex-col gap-1">
                             {/* Conteúdo */}
-                            
-                            <div className="flex gap-2 w-full">
+                            {ingredientFields.map((field, index) => (
+                            <div key={field.id} className="flex gap-2 w-full">
                                 <div className="flex grow">
-                                    <textarea id="ingredients" className={inputStyles} placeholder="Digite um ingrediente"/>
-                                   <button type="button" className="bg-white border border-zinc-300 rounded-md hover:bg-gray-100 transition-colors px-4 py-2 font-medium h-fit">Remover</button> 
+                                    <textarea id="ingredients" className={inputStyles} placeholder="Digite um ingrediente" {...register(`ingredients.${index}.value`)}/> {errors.ingredients?.[index]?.value?.message && <span className="text-red-500 text-sm">{errors.ingredients[index]?.value?.message}</span>}
+                                    { ingredientFields.length > 1 && (<button type="button" className="bg-white border border-zinc-300 rounded-md hover:bg-gray-100 transition-colors px-4 py-2 font-medium h-fit" onClick={() => removeIngredients(index)}>Remover</button> )}
                                 </div>
                             </div>
-                            
+                            ))}
 
-                            <button type="button" className="bg-white border border-zinc-300 rounded-md hover:bg-gray-100 transition-colors px-4 py-2 font-medium w-fit">Adicionar ingrediente</button>
+                            <button type="button" className="bg-white border border-zinc-300 rounded-md hover:bg-gray-100 transition-colors px-4 py-2 font-medium w-fit" onClick={() => appendIngredients({ value: "" })}>Adicionar ingrediente</button>
                         </div>
                     </div>
 
@@ -110,16 +128,16 @@ export default function RecipeFormModal({isOpen, onClose} :RecipeFormModalProps)
                         <label htmlFor="instructions">Instruções</label>
                         <div className="flex flex-col gap-1">
                             {/* Conteúdo */}
-                            
-                            <div className="flex gap-2 w-full">
+                            {instructionFields.map((field, index) => (
+                            <div key={field.id} className="flex gap-2 w-full">
                                 <div className="flex grow">
-                                    <textarea id="instructions" className={inputStyles}></textarea>
-                                    <button type="button" className="bg-white border border-zinc-300 rounded-md hover:bg-gray-100 transition-colors px-4 py-2 font-medium h-fit">Remover</button> 
+                                    <textarea id="instructions" className={inputStyles} placeholder="Digite uma instrução" {...register(`instructions.${index}.value`)}/> {errors.instructions?.[index]?.value?.message && <span className="text-red-500 text-sm">{errors.instructions[index]?.value?.message}</span>}
+                                    { instructionFields.length > 1 && (<button type="button" className="bg-white border border-zinc-300 rounded-md hover:bg-gray-100 transition-colors px-4 py-2 font-medium h-fit" onClick={() => removeInstructions(index)}>Remover</button> )}
                                 </div>
                             </div>
-                            
+                            ))} 
 
-                            <button type="button" className="bg-white border border-zinc-300 rounded-md hover:bg-gray-100 transition-colors px-4 py-2 font-medium w-fit">Adicionar instrução</button>
+                            <button type="button" className="bg-white border border-zinc-300 rounded-md hover:bg-gray-100 transition-colors px-4 py-2 font-medium w-fit" onClick={() => appendInstructions({ value: "" })}>Adicionar instrução</button>
                         </div>
                     </div>
                    
