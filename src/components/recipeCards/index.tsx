@@ -1,4 +1,4 @@
-// recipeCard.t"s"x
+
 
 "use client";
 import Link from "next/link";
@@ -9,22 +9,23 @@ import { Edit, Trash2 } from "lucide-react";
 interface RecipeCardProps {
   recipe: Recipe;
   onEdit: () => void;
+  onDelete: () => void;
 }
 
-export default function RecipeCard({ recipe, onEdit }: RecipeCardProps) {
+export default function RecipeCard({ recipe, onEdit, onDelete}: RecipeCardProps) {
   
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Evita o comportamento padrão do botão
-    e.stopPropagation(); // Impede que o evento suba até o <Link>
+    e.preventDefault(); 
+    e.stopPropagation(); 
     onEdit();
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Faltava os () aqui no seu código
-    e.stopPropagation(); // Impede que o evento suba até o <Link>
+    e.preventDefault(); 
+    e.stopPropagation(); 
+    onDelete();
     
-    // Futuramente você colocará a lógica de deletar aqui:
-    // onDelete(recipe.id);
+    
   };
 
   return (
