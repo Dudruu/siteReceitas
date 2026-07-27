@@ -8,11 +8,14 @@ import {
 } from "@/src/lib/formValidationSchemas/recipeSchema";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Recipe } from "@/src/lib/data";
+import { useEffect } from "react";
 
 interface RecipeFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (recipe: Omit<Recipe, "id">) => void;
+  onSave: (recipe: Omit<Recipe, "id">|Recipe) => void; 
+  mode: "create"| "edit",
+  recipe? :Recipe;
 }
 
 const DEFAULT_VALUES = {
@@ -31,6 +34,8 @@ export default function RecipeFormModal({
   isOpen,
   onClose,
   onSave,
+  mode,
+  recipe
 }: RecipeFormModalProps) {
   const inputStyles = "p-2 border border-zinc-200 rounded-md flex-grow w-full";
 
@@ -63,6 +68,22 @@ export default function RecipeFormModal({
     control,
     name: "instructions",
   });
+useEffect(()=>
+{
+  if(isOpen){
+    if(mode==="edit" && recipe){
+      reset({
+        ...recipe,
+        ingredients: recipe.ingredients.map((img)=>({value:img})),
+        instructions:   recipe.instructions.map((inst)=>({value:inst}))
+      })
+    } else {
+      reset(DEFAULT_VALUES)
+    }
+  }
+}, [mode,isOpen,recipe,reset])
+
+
 
   const onSubmit = (data: RecipeFormData) => {
     const recipeData = {
@@ -71,7 +92,7 @@ export default function RecipeFormModal({
       instructions: data.instructions.map((instruction) => instruction.value),
     };
     console.log(recipeData);
-    onSave(recipeData);
+    onSave(mode === "edit" && recipe ?{...recipeData, id:recipe.id}:recipeData);
     reset();
     onClose();
   };
@@ -80,7 +101,7 @@ export default function RecipeFormModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-white min-w-2xl max-h-[90dvh] overflow-scroll">
         <DialogHeader>
-          <DialogTitle>Nova Receita</DialogTitle>
+          <DialogTitle>{mode==="create" ? "Nova Receita":"Editar Receita"}</DialogTitle>
         </DialogHeader>
 
         <form
@@ -298,7 +319,7 @@ export default function RecipeFormModal({
               type="submit"
               className="bg-black text-white rounded-md hover:bg-gray-800 transition-colors px-4 py-2 font-medium"
             >
-              Criar Receitas
+              {mode==="create"?"Criar Receita":"Salvar Alterações"}
             </button>
           </div>
         </form>
