@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Inter} from "next/font/google";
+import { Inter, Geist } from "next/font/google";
 import "./globals.css";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   variable : "--font-inter",
@@ -15,6 +18,7 @@ export const metadata: Metadata = {
   description: "Site de receitas simples e saborosas",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,11 +27,13 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable}  antialiased`}
+      className={cn("antialiased", inter.variable, "font-sans", geist.variable)}
     >
-      <Header/>
-      <body className="min-h-full flex flex-col">{children}</body>
-      <Footer/>
+      <body className="min-h-full flex flex-col">
+        <Header/>
+        {children}
+        <Footer/>
+      </body>
     </html>
   );
 }
