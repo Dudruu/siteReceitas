@@ -1,6 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { recipes } from "../lib/data";
+import { Recipe } from "../lib/data";
 import RecipeCard from "../components/recipeCards";
 import api from "../lib/api" 
 
