@@ -1,5 +1,3 @@
-
-
 "use client";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,8 +6,8 @@ import { Edit, Trash2 } from "lucide-react";
 
 interface RecipeCardProps {
   recipe: Recipe;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export default function RecipeCard({ recipe, onEdit, onDelete}: RecipeCardProps) {
@@ -17,15 +15,13 @@ export default function RecipeCard({ recipe, onEdit, onDelete}: RecipeCardProps)
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); 
     e.stopPropagation(); 
-    onEdit();
+    onEdit?.();
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); 
     e.stopPropagation(); 
-    onDelete();
-    
-    
+    onDelete?.();
   };
 
   return (
@@ -45,22 +41,31 @@ export default function RecipeCard({ recipe, onEdit, onDelete}: RecipeCardProps)
             <span className="text-sm bg-gray-100 px-2 py-1 text-gray-500 rounded">
               {recipe.category}
             </span>
-            <div className="flex gap-2">
-              <button 
-                type="button" 
-                onClick={handleEdit} 
-                className="p-2 border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer"
-              >
-                <Edit size={16}/>
-              </button>
-              <button  
-                type="button" 
-                onClick={handleDelete} 
-                className="p-2 border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer"
-              >
-                <Trash2 size={16}/>
-              </button>
-            </div>
+            
+          
+            {(onEdit || onDelete) && (
+              <div className="flex gap-2">
+                {onEdit && (
+                  <button 
+                    type="button" 
+                    onClick={handleEdit} 
+                    className="p-2 border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer"
+                  >
+                    <Edit size={16}/>
+                  </button>
+                )}
+                {onDelete && (
+                  <button  
+                    type="button" 
+                    onClick={handleDelete} 
+                    className="p-2 border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer"
+                  >
+                    <Trash2 size={16}/>
+                  </button>
+                )}
+              </div>
+            )}
+            
           </div>
         </div>
       </div>

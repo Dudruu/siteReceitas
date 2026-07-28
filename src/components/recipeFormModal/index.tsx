@@ -70,12 +70,12 @@ export default function RecipeFormModal({
   });
 useEffect(()=>
 {
-  if(isOpen){
+  if(isOpen){ 
     if(mode==="edit" && recipe){
       reset({
         ...recipe,
-        ingredients: recipe.ingredients.map((img)=>({value:img})),
-        instructions:   recipe.instructions.map((inst)=>({value:inst}))
+        ingredients: recipe.ingredients.map((img)=>({value:img.value})),
+        instructions:   recipe.instructions.map((inst)=>({value:inst.value}))
       })
     } else {
       reset(DEFAULT_VALUES)
@@ -86,13 +86,8 @@ useEffect(()=>
 
 
   const onSubmit = (data: RecipeFormData) => {
-    const recipeData = {
-      ...data,
-      ingredients: data.ingredients.map((ingredient) => ingredient.value),
-      instructions: data.instructions.map((instruction) => instruction.value),
-    };
-    console.log(recipeData);
-    onSave(mode === "edit" && recipe ?{...recipeData, id:recipe.id}:recipeData);
+    
+    onSave(mode === "edit" && recipe ?{...data, id:recipe.id}:data);
     reset();
     onClose();
   };
