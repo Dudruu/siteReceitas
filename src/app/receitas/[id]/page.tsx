@@ -1,3 +1,4 @@
+
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,9 +15,13 @@ interface RecipesPageProps {
 }
 
 export default async function ReceitasPage({ params }: RecipesPageProps) {
+
+  //precisei pegar com o gemini essa sintaxe antes de implementar o delete, o next nao criava o app se a page n fosse atualizada e logo após deletar o lib/data o cód quebrou 
   const { id } = await params;
   let recipe: Recipe | null = null;
 
+
+  
   try {
     const response = await api.get(`/recipes/${id}`);
     recipe = response.data;
