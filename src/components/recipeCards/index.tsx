@@ -8,8 +8,8 @@ import { Edit, Trash2 } from "lucide-react";
 
 interface RecipeCardProps {
   recipe: Recipe;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export default function RecipeCard({ recipe, onEdit, onDelete}: RecipeCardProps) {
@@ -17,13 +17,13 @@ export default function RecipeCard({ recipe, onEdit, onDelete}: RecipeCardProps)
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); 
     e.stopPropagation(); 
-    onEdit();
+    onEdit?.();
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); 
     e.stopPropagation(); 
-    onDelete();
+    onDelete?.();
     
     
   };

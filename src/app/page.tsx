@@ -2,6 +2,7 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { recipes } from "../lib/data";
 import RecipeCard from "../components/recipeCards";
+import api from "../lib/api" 
 
 export default function Home() {
   const featureRecipes = recipes.slice(0, 3);
@@ -26,7 +27,7 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
               {featureRecipes.map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe} />
+                <RecipeCard key={recipe.id} recipe={recipe}/>
               ))}
             </div>
             
