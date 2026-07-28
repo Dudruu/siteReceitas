@@ -1,5 +1,3 @@
-
-
 "use client";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,8 +22,6 @@ export default function RecipeCard({ recipe, onEdit, onDelete}: RecipeCardProps)
     e.preventDefault(); 
     e.stopPropagation(); 
     onDelete?.();
-    
-    
   };
 
   return (
@@ -45,22 +41,31 @@ export default function RecipeCard({ recipe, onEdit, onDelete}: RecipeCardProps)
             <span className="text-sm bg-gray-100 px-2 py-1 text-gray-500 rounded">
               {recipe.category}
             </span>
-            <div className="flex gap-2">
-              <button 
-                type="button" 
-                onClick={handleEdit} 
-                className="p-2 border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer"
-              >
-                <Edit size={16}/>
-              </button>
-              <button  
-                type="button" 
-                onClick={handleDelete} 
-                className="p-2 border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer"
-              >
-                <Trash2 size={16}/>
-              </button>
-            </div>
+            
+          
+            {(onEdit || onDelete) && (
+              <div className="flex gap-2">
+                {onEdit && (
+                  <button 
+                    type="button" 
+                    onClick={handleEdit} 
+                    className="p-2 border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer"
+                  >
+                    <Edit size={16}/>
+                  </button>
+                )}
+                {onDelete && (
+                  <button  
+                    type="button" 
+                    onClick={handleDelete} 
+                    className="p-2 border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer"
+                  >
+                    <Trash2 size={16}/>
+                  </button>
+                )}
+              </div>
+            )}
+            
           </div>
         </div>
       </div>
