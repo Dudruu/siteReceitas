@@ -1,10 +1,12 @@
+
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { recipes } from "@/src/lib/data";
+import { Recipe} from "@/src/lib/data";
 import PreparationStep from "@/src/components/PreparationStep"
 import { notFound } from "next/navigation";
 import InfoPill from "@/src/components/infoPill";
+import api from "@/src/lib/api"
 
 interface RecipesPageProps {
   params: Promise<{
@@ -13,8 +15,19 @@ interface RecipesPageProps {
 }
 
 export default async function ReceitasPage({ params }: RecipesPageProps) {
+
+  //precisei pegar com o gemini essa sintaxe antes de implementar o delete, o next nao criava o app se a page n fosse atualizada e logo após deletar o lib/data o cód quebrou 
   const { id } = await params;
-  const recipe = recipes.find((recipe) => recipe.id === id);
+  let recipe: Recipe | null = null;
+
+
+  
+  try {
+    const response = await api.get(`/recipes/${id}`);
+    recipe = response.data;
+  } catch (error) {
+    console.error(`Erro ao buscar a receita com ID ${id}:`, error);
+  }
 
   if (!recipe) {
     return notFound();
@@ -52,22 +65,27 @@ export default async function ReceitasPage({ params }: RecipesPageProps) {
                 <InfoPill title="Categoria" info={recipe.category} />
             </div>
 
-            {/* Colunas */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
               <div>
                 <h2 className="text-xl font-bold mb-4">Ingredientes</h2>
                 <ul className="list-disc list-inside space-y-2">
-                  {recipe.ingredients.map((ingredient) => (
-                    <li key={ingredient} className="marker:text-orange-500">{ingredient}</li>
-                  ))}
+                  {recipe.ingredients.map((ingredient, index) => {
+                    const text = typeof ingredient === 'string' ? ingredient : ingredient.value;
+                    return (
+                      <li key={index} className="marker:text-orange-500">{text}</li>
+                    );
+                  })}
                 </ul>
               </div>
               <div>
                 <h2 className="text-xl font-bold mb-4">Modo de Preparo</h2>
                 <ol className="space-y-4">
-                  {recipe.instructions.map((instruction, index) => (
-                    <PreparationStep key={instruction} index={index + 1} description={instruction} />
-                  ))}
+                  {recipe.instructions.map((instruction, index) => {
+                    const text = typeof instruction === 'string' ? instruction : instruction.value;
+                    return (
+                      <PreparationStep key={index} index={index + 1} description={text} />
+                    );
+                  })}
                 </ol>
               </div>
             </div>
